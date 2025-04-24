@@ -1,4 +1,4 @@
-Package: spacexr_hd
+Package: spacexrhd
 Type: Package
 Title: SpatialeXpressionR: Cell type identification and cell type-specific differential expression in spatial transcriptomics
 Version: 2.2.1
