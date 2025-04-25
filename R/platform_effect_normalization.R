@@ -93,8 +93,8 @@ choose_sigma_c <- function(RCTD) {
   fit_ind = sample(names(puck@nUMI[puck@nUMI > MIN_UMI]), N_fit)
   beads = t(puck@counts[RCTD@internal_vars$gene_list_reg,fit_ind])
 
-  #message(paste('chooseSigma: using initial Q_mat with sigma = ',sigma/100))
-  #print(paste0("N_epoch: ",RCTD@config$N_epoch))
+  message(paste('chooseSigma: using initial Q_mat with sigma = ',sigma/100))
+  print(paste0("N_epoch: ",RCTD@config$N_epoch))
 
   nUMI <- puck@nUMI[fit_ind]
   cell_type_means <- RCTD@cell_type_info$renorm[[1]]
@@ -109,6 +109,7 @@ choose_sigma_c <- function(RCTD) {
   }
 
   NN<-nrow(beads)
+  print(NN)
   pb <- txtProgressBar(min = 0, max = RCTD@config$N_epoch, style = 3)
 
   for(iter in 1:RCTD@config$N_epoch)
@@ -163,7 +164,7 @@ choose_sigma_c <- function(RCTD) {
     rownames(weights) <- fit_ind
     colnames(weights) <- RCTD@cell_type_info$renorm[[2]]
     prediction <- sweep(as.matrix(RCTD@cell_type_info$renorm[[1]][RCTD@internal_vars$gene_list_reg,]) %*% t(as.matrix(weights)), 2, puck@nUMI[fit_ind], '*')
-    #message(paste('Likelihood value:',calc_log_l_vec(as.vector(prediction), as.vector(t(beads)))))
+    message(paste('Likelihood value:',calc_log_l_vec(as.vector(prediction), as.vector(t(beads)))))
     sigma_prev <- sigma
     sigma <- chooseSigma(prediction, t(beads), Q_mat_all, X_vals, sigma)
 
